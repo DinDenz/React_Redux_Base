@@ -1,8 +1,8 @@
 import React from "react";
 import SingleComment from "./SingleComment";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { commentCreate } from "./redux/actions";
+import { commentCreate, commentsLoad } from "./redux/actions";
 import uniqeId from "uniqid";
 
 export default function Comments() {
@@ -28,10 +28,19 @@ export default function Comments() {
     dispatch(commentCreate(textComment, id));
   };
 
+  useEffect(() => {
+    dispatch(commentsLoad());
+  }, []);
+
   return (
     <div className="card-comments">
       <form onSubmit={handleFormSubmit} className="comments-item-create">
-        <input type="text" value={textComment} onChange={handleInputChange} placeholder="твой коммент" />
+        <input
+          type="text"
+          value={textComment}
+          onChange={handleInputChange}
+          placeholder="твой коммент"
+        />
         <input type="submit" />
       </form>
       {!!comments.length &&
