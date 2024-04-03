@@ -7,7 +7,9 @@ import {
   COMMENT_DELETE,
   COMMENTS_LOAD,
   LOADER_DISPLAY_ON,
-  LOADER_DISPLAY_OFF
+  LOADER_DISPLAY_OFF,
+  ERROR_ON,
+  ERROR_OFF
 } from "./types";
 
 export function incrementLikes() {
@@ -50,18 +52,23 @@ export function commentDelete(id) {
 
 export function commentsLoad() {
   return async (dispatch) => {
-    dispatch(loaderOn());
-    const response = await fetch(
-      "https://jsonplaceholder.typicode.com/comments?_limit=10"
-    );
-    const jsonData = await response.json();
-    setTimeout(() => {
-      dispatch({
-        type: COMMENTS_LOAD,
-        data: jsonData
-      });
+    try {
+      dispatch(loaderOn());
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/comments?_limit=10"
+      );
+      const jsonData = await response.json();
+      setTimeout(() => {
+        dispatch({
+          type: COMMENTS_LOAD,
+          data: jsonData
+        });
+        dispatch(loaderOff());
+      }, 1000);
+    } catch (err) {
+      dispatch(errorOn("Произошла ошибка API"));
       dispatch(loaderOff());
-    }, 1000);
+    }
     /* dispatch({
       type: COMMENTS_LOAD,
       data: jsonData
@@ -77,5 +84,21 @@ export function loaderOn() {
 export function loaderOff() {
   return {
     type: LOADER_DISPLAY_OFF
+  };
+}
+export function errorOn(errorMessage) {
+  return (dispatch) => {
+    dispatch({
+      type: ERROR_ON,
+      message: errorMessage
+    });
+    setTimeout(() => {
+      dispatch(errorOff());
+    }, 2000);
+  };
+}
+export function errorOff() {
+  return {
+    type: ERROR_OFF
   };
 }

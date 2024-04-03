@@ -9,7 +9,6 @@ const initialState = {
   comments: []
 };
 export const commentReducer = (state = initialState, action) => {
-  console.log("action reducer", action);
   switch (action.type) {
     case COMMENT_CREATE:
       return {

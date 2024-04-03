@@ -7,3 +7,5 @@ export const COMMENT_DELETE = "COMMENT_DELETE";
 export const COMMENTS_LOAD = "COMMENTS_LOAD";
 export const LOADER_DISPLAY_ON = "LOADER_DISPLAY_ON";
 export const LOADER_DISPLAY_OFF = "LOADER_DISPLAY_OFF";
+export const ERROR_ON = "ERROR_ON";
+export const ERROR_OFF = "ERROR_OFF";
